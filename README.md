@@ -1,4 +1,4 @@
-# TuneTastic — Music Platform (Original Student Project)
+# TuneTastic — Music Platform 
 
 **TuneTastic** is a music-themed web platform developed as a student project using **HTML, CSS, JavaScript, PHP, and MySQL**. The original application explores music discovery and playback, account registration, artist beat uploads and editing, and a demonstration purchase workflow.
 
