@@ -1,0 +1,10 @@
+# Local settings and uploaded files
+.env
+.env.local
+config.local.php
+/storage/*
+!/storage/.gitkeep
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
