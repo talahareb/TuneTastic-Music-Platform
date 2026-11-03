@@ -1,123 +1,66 @@
-# TuneTastic — Music Marketplace Prototype
+# TuneTastic — Music Platform (Original Student Project)
 
-A full-stack academic web application for discovering, uploading, and organizing music beats. This clean portfolio edition is adapted from an earlier collaborative TuneTastic coursework project, with a refreshed interface and refactored server-side code.
+**TuneTastic** is a music-themed web platform developed as a student project using **HTML, CSS, JavaScript, PHP, and MySQL**. The original application explores music discovery and playback, account registration, artist beat uploads and editing, and a demonstration purchase workflow.
 
-**Stack:** PHP 8.1+, MySQL 8+, HTML, CSS, vanilla JavaScript. **No Node.js, package manager, or paid music service required.**
+This repository preserves the **original design, code, images, and audio**. It is an educational prototype, **not a production-ready music marketplace**.
 
-> **Portfolio demo — not a commercial music store.** The "purchase" workflow adds a track to a demo library; no payment processing or credit-card collection is implemented. This project does not contain copyrighted music, personal photographs, user data, or real accounts. Upload media only when you have the rights to share it.
+## Screenshots
 
-## Features
+### Homepage
 
-- Account registration and sign-in with password hashing and PHP sessions
-- Artist studio for publishing, updating, and deleting your own tracks
-- Audio previews, optional cover images, descriptions, genre labels, and illustrative prices
-- Public discovery page and individual beat detail pages
-- Demo "add to library" purchase record (no real transactions)
-- Prepared SQL queries, CSRF protection, owner authorization, basic upload limits and MIME validation
-- Media stored outside the public web root and served through a controlled route
-- Responsive purple/pink interface built without frontend dependencies
+The original black-and-purple landing page, featuring the TuneTastic branding and music-inspired artwork.
 
-## Getting started
+![TuneTastic original homepage with purple navigation, pink lettering, and guitar artwork](screenshots/tunetastic-homepage.png)
 
-### Requirements
+### Registration and Login
 
-- PHP **8.1 or newer**, with extensions `pdo_mysql` and `fileinfo`
-- MySQL or compatible MariaDB server
-- A browser
+The original account interface with signup and login forms.
 
-### 1. Create a database
+![TuneTastic signup interface with dark background and colorful music-wave artwork](screenshots/tunetastic-registration.png)
 
-Import `database/schema.sql` using phpMyAdmin or the command line:
+## Project Features
 
-```bash
-mysql -u root -p < database/schema.sql
-```
+- **Music-themed homepage** with navigation to About Us, Services, FAQ, and registration pages.
+- **Music listening pages** with bundled audio tracks and JavaScript-assisted playback interfaces.
+- **User registration and login** interfaces connected to PHP processing scripts.
+- **Creator features** for submitting and managing beats through PHP endpoints.
+- **Purchase-related demonstration** pages designed as part of the coursework (not a real payment solution).
+- **Original imagery and audio assets** maintained for the archival version of the project.
 
-This creates the `tunetastic` database and the three tables: `users`, `beats`, `purchases`.
+Some server-side functionality requires a compatible MySQL database and may need repairs before it can run locally. The features listed above describe code and interfaces present in the archive, not a fully tested deployed service.
 
-For local development, create a restricted MySQL user with permissions for the `tunetastic` database, or configure your existing local development account. Never commit real credentials.
+## Technology Stack
 
-### 2. Configure database access
+| Layer | Technologies |
+| --- | --- |
+| Frontend | HTML, CSS, JavaScript |
+| Backend | PHP |
+| Data storage | MySQL (used by original PHP scripts) |
+| Media | MP3 audio, images, and uploaded-file assets |
 
-Copy `config.example.php` to `config.local.php` and edit your local host, port, database user, and password. This file is excluded by `.gitignore`.
-
-Windows (PowerShell):
-
-```powershell
-Copy-Item config.example.php config.local.php
-```
-
-macOS / Linux:
-
-```bash
-cp config.example.php config.local.php
-```
-
-The original student project used a WAMP MySQL port of `3308`; most local installations use `3306`. Choose the port your MySQL installation actually uses.
-
-### 3. Start the application
-
-From this repository's root directory:
-
-```bash
-php -S 127.0.0.1:8000 -t public
-```
-
-Visit **http://127.0.0.1:8000**. Sign up, upload an original MP3/WAV/OGG file, and use a second test account to save it in the demo library.
-
-The app starts with **no sample tracks** by design: the original bundled music and personal images were intentionally removed.
-
-### 4. Adjust PHP upload limits (if needed)
-
-`php.ini` must permit your desired file size: for example `upload_max_filesize = 16M` and `post_max_size = 20M`. App limits are **12 MB per audio file** and **3 MB per cover**. Restart PHP after changing `php.ini`.
-
-## Directory structure
+## Selected Project Structure
 
 ```text
-TuneTastic-Music-Platform/
-├── app/
-│   ├── bootstrap.php      # Configuration, DB connection, security helpers
-│   └── actions.php        # Authentication and beat actions
-├── public/
-│   ├── index.php          # Routing and page templates
-│   └── assets/style.css   # Responsive interface
-├── database/schema.sql   # MySQL tables
-├── storage/              # Private local uploads (git-ignored)
-├── tests/test_helpers.php
-├── config.example.php
+TuneTastic/
+├── homepage.html           # Original landing page
+├── index.html              # Identical copy of homepage for convenience
+├── Registration.html       # Signup and login interfaces
+├── aboutus.html            # About page
+├── faq.html                # FAQ page
+├── listen.html             # Music listening interface
+├── produce.html            # Creator / beat submission interface
+├── purchase.html           # Purchase-related project page
+├── signupprocess.php       # Original signup handler
+├── loginprocess.php        # Original login handler
+├── process_beat.php        # Original beat-processing code
+├── audio/                  # Original bundled audio tracks
+├── assets/                 # Original assets
+├── uploads/                # Original uploaded media
+├── screenshots/
+│   ├── tunetastic-homepage.png
+│   └── tunetastic-registration.png
+├── RESTORE_NOTES.md
 └── README.md
 ```
 
-## Architecture
-
-**Browser → PHP controller/actions → PDO prepared queries → MySQL**. Uploaded media is given a randomized filename and placed in `storage/` outside the public directory. `/index.php?media=<beat_id>` streams the stored content after resolving the database record.
-
-Every beat is owned by its creator. Edit/delete routes check the session's user ID against the beat's `owner_id`. The demo purchase route associates a registered listener with a beat in the `purchases` table.
-
-## Tests and verification
-
-Run helper tests:
-
-```bash
-php tests/test_helpers.php
-```
-
-Run PHP syntax checks:
-
-```bash
-php -l app/bootstrap.php
-php -l app/actions.php
-php -l public/index.php
-```
-
-Manual integration checks (require your own MySQL installation): sign up → log out → log in → upload original audio → visit discovery → listen → edit → save to another account's library → delete as creator. **No end-to-end database test is provided in the ZIP.**
-
-## Scope and limitations
-
-- Educational prototype, **not production hardened** and not a real checkout or payment system
-- No email verification, password reset, anti-spam, rate limiting, or dedicated download authorization
-- Tracks are publicly previewable by design; ownership/rights enforcement is outside scope
-- Built-in PHP server is for local development, not production hosting
-- Font stylesheet references Google Fonts; browser default fonts are used if unavailable
-- Requires a local MySQL server and PHP extensions; does not ship with a populated database
-
+Additional HTML, PHP, JavaScript, images, and MP3 files from the original project remain in the repository.
